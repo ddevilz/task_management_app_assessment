@@ -1,5 +1,11 @@
+import Task from "./pages/Task";
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <Task />
+    </>
+  );
 }
 
 export default App;
