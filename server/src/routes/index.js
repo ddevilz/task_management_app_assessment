@@ -10,6 +10,13 @@ const router = Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: Tasks
+ *   description: API endpoints for tasks
+ */
+
+/**
+ * @swagger
  * /create:
  *   post:
  *     summary: Create a new task
@@ -45,8 +52,6 @@ const router = Router();
  *               properties:
  *                 success:
  *                   type: boolean
- *                 task:
- *                   $ref: '#/components/schemas/Task'
  *       400:
  *         description: Invalid input
  */
@@ -96,8 +101,7 @@ router.post("/create", create);
  *               properties:
  *                 success:
  *                   type: boolean
- *                 task:
- *                   $ref: '#/components/schemas/Task'
+ *
  *       400:
  *         description: Invalid input
  *       404:
@@ -172,8 +176,7 @@ router.delete("/delete/:id", deleteTask);
  *                   type: integer
  *                 tasks:
  *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Task'
+ *
  */
 router.get("/tasks", getTasks);
 
