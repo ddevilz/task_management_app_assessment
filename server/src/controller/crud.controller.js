@@ -1,5 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import Task from "../model/task.schema.js";
+import { Priority } from "../utils/priority.js";
 
 export const create = asyncHandler(async (req, res) => {
   const { title, description, priority, dueDate } = req.body;
@@ -26,10 +27,30 @@ export const create = asyncHandler(async (req, res) => {
 });
 
 export const getTasks = asyncHandler(async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10, sortBy } = req.query;
 
   const skip = (page - 1) * limit;
-  const tasks = await Task.find().skip(skip).limit(parseInt(limit));
+
+  let tasks;
+  if (sortBy === "priority") {
+    tasks = await Task.find()
+      .skip(skip)
+      .limit(parseInt(limit))
+      .sort({ priority: 1 });
+    tasks = tasks.sort((a, b) => {
+      const priorityOrder = [Priority.HIGH, Priority.MEDIUM, Priority.LOW];
+      return (
+        priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority)
+      );
+    });
+  } else if (sortBy === "dueDate") {
+    tasks = await Task.find()
+      .skip(skip)
+      .limit(parseInt(limit))
+      .sort({ dueDate: 1 });
+  } else {
+    tasks = await Task.find().skip(skip).limit(parseInt(limit));
+  }
 
   const totalTasks = await Task.countDocuments();
   const totalPages = Math.ceil(totalTasks / limit);
