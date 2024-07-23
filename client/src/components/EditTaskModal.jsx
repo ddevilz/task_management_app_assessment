@@ -9,6 +9,22 @@ const EditTaskModal = ({ task, isOpen, onClose, onSave }) => {
     dueDate: "",
   });
 
+  const handleDueDateChange = (e) => {
+    const selectedDate = new Date(e.target.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      updatedTask.dueDate = task.dueDate;
+      return alert("Please select a valid date");
+    } else {
+      setUpdatedTask((prevTask) => ({
+        ...prevTask,
+        dueDate: e.target.value,
+      }));
+    }
+  };
+
   useEffect(() => {
     if (task) {
       setUpdatedTask({
@@ -82,7 +98,7 @@ const EditTaskModal = ({ task, isOpen, onClose, onSave }) => {
               type="date"
               id="dueDate"
               defaultValue={updatedTask.dueDate}
-              onChange={handleChange}
+              onChange={handleDueDateChange}
               className="input input-bordered w-full"
             />
           </div>

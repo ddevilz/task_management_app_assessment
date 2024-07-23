@@ -22,6 +22,32 @@ const TaskForm = () => {
     }));
   };
 
+  const handleDueDateChange = (e) => {
+    const selectedDate = new Date(e.target.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      Toastify({
+        text: "Due date cannot be in the past",
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "left",
+        stopOnFocus: true,
+        style: {
+          background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        },
+      }).showToast();
+      return;
+    } else {
+      setTask((prevTask) => ({
+        ...prevTask,
+        dueDate: e.target.value,
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -115,7 +141,7 @@ const TaskForm = () => {
               name="dueDate"
               className="w-full rounded-md px-3 py-2"
               value={task.dueDate}
-              onChange={handleChange}
+              onChange={handleDueDateChange}
             />
           </div>
           <button
